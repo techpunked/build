@@ -82,7 +82,7 @@ TARGET_thumb_CFLAGS := -mthumb \
                         -O3 \
                         -fomit-frame-pointer \
                         -funsafe-math-optimizations \
-						-fstrict-aliasing \
+			-fstrict-aliasing \
                         -Wstrict-aliasing \
                         -Werror=strict-aliasing
 						
@@ -120,6 +120,9 @@ TARGET_GLOBAL_CFLAGS += \
 			-Werror=format-security \
 			-D_FORTIFY_SOURCE=2 \
 			-fno-short-enums \
+			-fstrict-aliasing \
+                        -Wstrict-aliasing \
+                        -Werror=strict-aliasing \
 			$(arch_variant_cflags) \
 			-include $(android_config_h) \
 			-I $(dir $(android_config_h))
@@ -160,7 +163,8 @@ TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
 TARGET_RELEASE_CFLAGS := \
 			-DNDEBUG \
 			-g \
-			-Wstrict-aliasing=2 \
+			-Wstrict-aliasing \
+			-Werror=strict-aliasing \
 			-fgcse-after-reload \
 			-frerun-cse-after-loop \
 			-frename-registers
