@@ -67,20 +67,16 @@ else
 endif
 
 TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
-OPT_MEM := -fgcse-las
 
-TARGET_arm_CFLAGS :=    -O3 \
+TARGET_arm_CFLAGS :=    -Ofast \
                         -fomit-frame-pointer \
-                        -fstrict-aliasing    \
 			-fno-tree-vectorize \
+			-fgcse-las \
                         -funsafe-loop-optimizations \
-			-funswitch-loops \
+			-funroll-loops \
+			-fno-unsafe-math-optimizations \
                         -Wstrict-aliasing \
                         -Werror=strict-aliasing
-
-ifdef OPT_MEMORY
-TARGET_arm_CFLAGS += $(OPT_MEM)
-endif
 
 # Modules can choose to compile some source as thumb.
 TARGET_thumb_CFLAGS := -mthumb \
@@ -88,13 +84,8 @@ TARGET_thumb_CFLAGS := -mthumb \
                         -fomit-frame-pointer \
 			-fno-tree-vectorize \
                         -funsafe-math-optimizations \
-			-fstrict-aliasing \
                         -Wstrict-aliasing \
                         -Werror=strict-aliasing
-
-ifdef OPT_MEMORY
-TARGET_arm_CFLAGS += $(OPT_MEM)
-endif
 						
 TARGET_arm_CFLAGS +=  -Wno-unused-parameter \
                       -Wno-unused-value \
@@ -137,18 +128,8 @@ TARGET_GLOBAL_CFLAGS += \
 			-include $(android_config_h) \
 			-I $(dir $(android_config_h))
 
-ifdef OPT_MEMORY
-TARGET_arm_CFLAGS += $(OPT_MEM)
-endif
-
-# This warning causes dalvik not to build with gcc 4.6+ and -Werror.
-# We cannot turn it off blindly since the option is not available
-# in gcc-4.4.x.  We also want to disable sincos optimization globally
-# by turning off the builtin sin function.
-ifneq ($(filter 4.6 4.6.% 4.7 4.7.% 4.8, $(TARGET_GCC_VERSION)),)
 TARGET_GLOBAL_CFLAGS += -Wno-unused-but-set-variable -fno-builtin-sin \
 			-fno-strict-volatile-bitfields
-endif
 
 # This is to avoid the dreaded warning compiler message:
 #   note: the mangling of 'va_list' has changed in GCC 4.4
@@ -183,10 +164,6 @@ TARGET_RELEASE_CFLAGS := \
 			-fgcse-after-reload \
 			-frerun-cse-after-loop \
 			-frename-registers
-
-ifdef OPT_MEMORY
-TARGET_arm_CFLAGS += $(OPT_MEM)
-endif
 
 libc_root := bionic/libc
 libm_root := bionic/libm

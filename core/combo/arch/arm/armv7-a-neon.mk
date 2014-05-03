@@ -6,20 +6,12 @@ ARCH_ARM_HAVE_VFP               := true
 ARCH_ARM_HAVE_VFP_D32           := true
 ARCH_ARM_HAVE_NEON              := true
 
-ifeq ($(strip $(TARGET_CPU_VARIANT)), cortex-a15)
-	arch_variant_cflags := -mcpu=cortex-a15
-else
-
-ifeq ($(strip $(TARGET_CPU_VARIANT)),krait)
-	arch_variant_cflags := -mcpu=cortex-a15
-else
-	arch_variant_cflags := -march=armv7-a
-endif
-endif
-
 arch_variant_cflags += \
     -mfloat-abi=softfp \
-    -mfpu=neon-vfpv4
+    -mfpu=neon-vfpv4 \
+    -mcpu=cortex-a15 \
+    -mtune=cortex-a15
+    
 
 arch_variant_ldflags := \
 	-Wl,--fix-cortex-a8
