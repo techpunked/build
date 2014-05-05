@@ -15,9 +15,11 @@ TARGET_KRAIT_BIONIC_PLDSIZE := 64
 
 arch_variant_cflags += \
     -mfloat-abi=softfp \
+	-DHARDFLOAT \
     -mfpu=neon-vfpv4 \
     -mcpu=cortex-a15 \
-    -mtune=cortex-a15
+    -mtune=cortex-a15 \
+	-funroll-loops
     
 
 arch_variant_ldflags := \
